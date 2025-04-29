@@ -40,7 +40,7 @@ dw-chat-nest： NestJs 后端工程        Github：https://github.com/dawei1898
 
 
 ### 初始化建表 SQL
-/db/init-sql/init-ddl-postgres.sql
+script/DDL/dwc_init_ddl_v1.sql
 
 ### 本地启动项目
 
