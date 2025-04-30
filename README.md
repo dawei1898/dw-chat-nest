@@ -70,9 +70,9 @@ nest new project-name
 
 生成模块
 ```shell
-nest g module user
-nest g controller user
-nest g service user
+nest g module vote
+nest g controller vote
+nest g service vote
 ```
 
 配置
