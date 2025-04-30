@@ -5,49 +5,49 @@ export class MessageEntity {
   @PrimaryColumn({ name: 'msg_id', type: 'bigint', comment: '消息ID' })
   msgId: bigint;
 
-  @Column({ name: 'raw_msg_id', type: 'string', comment: '原始消息ID' })
+  @Column({ name: 'raw_msg_id', type: 'varchar', comment: '原始消息ID' })
   rawMsgId: string;
 
-  @Column({ name: 'chat_id', type: 'string', comment: '聊天会话ID' })
+  @Column({ name: 'chat_id', type: 'varchar', comment: '聊天会话ID' })
   chatId: string;
 
   @Column({
     name: 'type',
-    type: 'string',
+    type: 'varchar',
     comment: '消息类型（1-用户提问，2-机器回答）',
   })
   type: string;
 
   @Column({
     name: 'role',
-    type: 'string',
+    type: 'varchar',
     comment: '角色（user-用户，assistant-AI助手）',
   })
   role: string;
 
   @Column({
     name: 'content_type',
-    type: 'string',
+    type: 'varchar',
     comment: '消息内容格式（text-文本，image-图像）',
   })
   contentType: string;
 
-  @Column({ name: 'content', type: 'string', comment: '消息内容' })
+  @Column({ name: 'content', type: 'varchar', comment: '消息内容' })
   content: string;
 
-  @Column({ name: 'reasoning_content', type: 'string', comment: '思考内容' })
+  @Column({ name: 'reasoning_content', type: 'varchar', comment: '思考内容' })
   reasoningContent: string;
 
-  @Column({ name: 'tokens', type: 'integer', comment: '消耗token数' })
+  @Column({ name: 'tokens', type: 'int', comment: '消耗token数' })
   tokens: number;
 
-  @Column({ name: 'model_group', type: 'string', comment: '模型厂商' })
+  @Column({ name: 'model_group', type: 'varchar', comment: '模型厂商' })
   modelGroup: string;
 
-  @Column({ name: 'model_id', type: 'string', comment: '模型ID' })
+  @Column({ name: 'model_id', type: 'varchar', comment: '模型ID' })
   modelId: string;
 
-  @Column({ name: 'create_user', type: 'string', comment: '创建人ID' })
+  @Column({ name: 'create_user', type: 'varchar', comment: '创建人ID' })
   createUser: string;
 
   @CreateDateColumn({

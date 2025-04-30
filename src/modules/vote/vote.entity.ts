@@ -13,7 +13,7 @@ export class VoteEntity {
 
   @Column({
     name: 'content_id',
-    type: 'string',
+    type: 'varchar',
     comment: '内容ID（消息、评论等）',
   })
   contentId: string;
@@ -21,7 +21,7 @@ export class VoteEntity {
   @Column({ name: 'user_id', type: 'bigint', comment: '用户 ID' })
   userId: bigint;
 
-  @Column({ name: 'vote_type', type: 'string', comment: 'up-点赞，down-点踩' })
+  @Column({ name: 'vote_type', type: 'varchar', comment: 'up-点赞，down-点踩' })
   voteType: string;
 
   @CreateDateColumn({

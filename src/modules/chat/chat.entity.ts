@@ -8,10 +8,10 @@ import {
 
 @Entity({ name: 'dwc_chat_record' })
 export class ChatEntity {
-  @PrimaryColumn({ name: 'chat_id', type: 'string', comment: '聊天会话ID' })
+  @PrimaryColumn({ name: 'chat_id', type: 'varchar', comment: '聊天会话ID' })
   chatId: string;
 
-  @Column({ name: 'chat_name', type: 'string', comment: '会话名称' })
+  @Column({ name: 'chat_name', type: 'varchar', comment: '会话名称' })
   chatName: string;
 
   @Column({ name: 'user_id', type: 'bigint', comment: '所属用户ID' })
