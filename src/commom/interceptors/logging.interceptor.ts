@@ -25,12 +25,12 @@ export class LoggingInterceptor implements NestInterceptor {
       //this.logger.debug('日志拦截器');
       //this.logger.log(`\n--- 接口请求开始 ---`);
       this.logger.log(`请求路径: ${method} ${url}`);
-      this.logger.log('Request Query:', JSON.stringify(query));
-      this.logger.log('Request Params:', JSON.stringify(params));
-      this.logger.log('Request Body:', JSON.stringify(body));
+      this.logger.log(`Request Query: ${JSON.stringify(query)}`);
+      this.logger.log(`Request Params: ${JSON.stringify(params)}`);
+      this.logger.log(`Request Body: ${JSON.stringify(body)}`);
       // 打印调用方 IP
       const clientIp = request.ip || request.connection.remoteAddress;
-      this.logger.log('Client IP:', clientIp);
+      this.logger.log(`Client IP: ${clientIp}`);
     } catch (e) {
       this.logger.error('Failed to print request.', e);
     }

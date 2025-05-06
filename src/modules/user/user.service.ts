@@ -1,6 +1,61 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from './user.entity';
+import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
 
+import { randomUUID } from 'crypto';
+import { AuthService } from '../../components/auth/auth.service';
+import { BizException } from '../../commom/exceptions/biz.exception';
+import { LoginUser } from '../../components/auth/login-user';
+
+/**
+ * 用户服务
+ */
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
+
+  constructor(
+    private configService: ConfigService,
+    private authService: AuthService,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
+
+  /**
+   * 用户登录
+   */
+  async login(username: string, password: string) {
+    const user = await this.userRepository.findOneBy({ name: username });
+    if (!user) {
+      throw new BizException('用户不存在！');
+    }
+    if (password !== user.password) {
+      throw new BizException('密码不正确！');
+    }
+    // 生成 token
+    const loginUser: LoginUser = {
+      tokenId: randomUUID(),
+      id: user.id,
+      name: user.name,
+      expiresIn: new Date().getTime(),
+    };
+    const token = await this.authService.buildToken(loginUser);
+    this.logger.log(
+      `登录成功，loginUser:${JSON.stringify(loginUser)}，  token：${token}`,
+    );
+    return token;
+  }
+
+  /**
+   * 退出登录
+   */
+  async logout(user: LoginUser) {
+    if (user && user.tokenId) {
+      await this.authService.removeToken(user.tokenId);
+      return true;
+    }
+    return false;
+  }
 }
