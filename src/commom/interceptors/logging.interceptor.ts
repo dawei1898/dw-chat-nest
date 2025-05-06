@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Request, Response } from 'express';
+import { AddressUtil } from '../utils/address.util';
 
 /**
  * 日志拦截器
@@ -29,8 +30,8 @@ export class LoggingInterceptor implements NestInterceptor {
       this.logger.log(`Request Params: ${JSON.stringify(params)}`);
       this.logger.log(`Request Body: ${JSON.stringify(body)}`);
       // 打印调用方 IP
-      const clientIp = request.ip || request.connection.remoteAddress;
-      this.logger.log(`Client IP: ${clientIp}`);
+      const remoteIp = AddressUtil.getRemoteIP(request);
+      this.logger.log(`Remote IP: ${remoteIp}`);
     } catch (e) {
       this.logger.error('Failed to print request.', e);
     }
