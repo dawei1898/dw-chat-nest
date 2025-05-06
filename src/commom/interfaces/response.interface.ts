@@ -1,5 +1,5 @@
 export const SUCCESS = 200;
-const VALIDATE_FAIL = 400;
+export const VALIDATE_FAIL = 400;
 export const AUTH_FAIL = 401;
 const FAIL = 500;
 

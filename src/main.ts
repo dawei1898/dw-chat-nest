@@ -3,7 +3,10 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { BizExceptionFilter } from './commom/filters/biz-exception.filter';
 import { AuthExceptionFilter } from './commom/filters/auth-exception.filter';
-import { ValidateExceptionFilter } from './commom/filters/validate-exception.filter';
+import {
+  BadRequestExceptionFilter,
+  ValidateExceptionFilter,
+} from './commom/filters/validate-exception.filter';
 
 /**
  * 项目启动入口
@@ -16,6 +19,7 @@ async function bootstrap() {
     new BizExceptionFilter(),
     new AuthExceptionFilter(),
     new ValidateExceptionFilter(),
+    new BadRequestExceptionFilter(),
   );
   /*// 参数校验
   app.useGlobalPipes(
