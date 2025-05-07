@@ -24,14 +24,18 @@ export class LoggingInterceptor implements NestInterceptor {
     try {
       // 打印入参
       //this.logger.debug('日志拦截器');
-      //this.logger.log(`\n--- 接口请求开始 ---`);
-      this.logger.log(`请求路径: ${method} ${url}`);
-      this.logger.log(`Request Query: ${JSON.stringify(query)}`);
-      this.logger.log(`Request Params: ${JSON.stringify(params)}`);
-      this.logger.log(`Request Body: ${JSON.stringify(body)}`);
       // 打印调用方 IP
       const remoteIp = AddressUtil.getRemoteIP(request);
-      this.logger.log(`Remote IP: ${remoteIp}`);
+      this.logger.log(`Remote IP: ${remoteIp}, Request Url: ${method} ${url}`);
+      if (query && Object.keys(query).length > 0) {
+        this.logger.log(`Request Query: ${JSON.stringify(query)}`);
+      }
+      if (params && Object.keys(params).length > 0) {
+        this.logger.log(`Request Params: ${JSON.stringify(params)}`);
+      }
+      if (body && Object.keys(body).length > 0) {
+        this.logger.log(`Request Body: ${JSON.stringify(body)}`);
+      }
     } catch (e) {
       this.logger.error('Failed to print request.', e);
     }
@@ -43,11 +47,8 @@ export class LoggingInterceptor implements NestInterceptor {
           //this.logger.debug('日志拦截器');
           // 打印返参
           this.logger.log(
-            `请求路径: ${method} ${url}, Response Body: ${JSON.stringify(data)}`,
+            `Request Url: ${method} ${url}, Response Body: ${JSON.stringify(data)}, useTime: ${Date.now() - now} ms`,
           );
-          // 打印接口耗时
-          this.logger.log(`接口耗时: ${Date.now() - now} ms`);
-          //this.logger.log(`--- 接口请求结束 ---\n`);
         } catch (e) {
           this.logger.error('Failed to print response.', e);
         }

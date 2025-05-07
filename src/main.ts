@@ -7,6 +7,7 @@ import {
   BadRequestExceptionFilter,
   ValidateExceptionFilter,
 } from './commom/filters/validate-exception.filter';
+import { TransformInterceptor } from './commom/interceptors/transform.interceptor';
 
 /**
  * 项目启动入口
@@ -14,13 +15,15 @@ import {
 async function bootstrap() {
   const logger = new Logger('Bootstrap'); // 创建 Logger 实例
   const app = await NestFactory.create(AppModule);
-  // 业务异常处理器
+  // 异常处理器
   app.useGlobalFilters(
     new BizExceptionFilter(),
     new AuthExceptionFilter(),
     new ValidateExceptionFilter(),
     new BadRequestExceptionFilter(),
   );
+  // 拦截器
+  app.useGlobalInterceptors(new TransformInterceptor());
   /*// 参数校验
   app.useGlobalPipes(
     new ValidationPipe({

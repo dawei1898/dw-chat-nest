@@ -23,13 +23,25 @@ export class ValidateUtil {
   }
 
   public static isNull(obj: any, message: string): void {
-    if (obj === null) {
+    if (obj === null || obj === undefined) {
+      throw new ValidateException(message);
+    }
+  }
+
+  public static isNotNull(obj: any, message: string): void {
+    if (obj !== null && obj !== undefined) {
       throw new ValidateException(message);
     }
   }
 
   public static isEmpty(str: string, message: string): void {
     if (!str || str.trim().length === 0) {
+      throw new ValidateException(message);
+    }
+  }
+
+  public static isNotEmpty(str: string, message: string): void {
+    if (str || str.trim().length > 0) {
       throw new ValidateException(message);
     }
   }

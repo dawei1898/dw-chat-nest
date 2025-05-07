@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthException } from '../exceptions/auth.exception';
-import { ApiResponse, AUTH_FAIL } from '../interfaces/response.interface';
+import { ApiResponse, AUTH_FAIL } from '../interfaces/api-response.interface';
 
 /**
  * 鉴权失败异常捕捉器

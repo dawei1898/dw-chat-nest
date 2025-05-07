@@ -13,8 +13,7 @@ export function Validated(options?: ValidationPipeOptions) {
   return applyDecorators(
     UsePipes(
       new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
+        //whitelist: true,
         transform: true,
         ...options,
       }),

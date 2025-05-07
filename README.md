@@ -127,3 +127,8 @@ npm install openai
 ```shell
 npm install date-fns
 ```
+
+雪花算法
+```shell
+npm install snowflake-uid --save
+```

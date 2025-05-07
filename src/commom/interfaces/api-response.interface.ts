@@ -16,20 +16,23 @@ export interface Response<T = any> {
   data?: T;
 }
 
-export class ApiResponse<T> implements Response<T> {
+export class ApiResponse<T = any> implements Response<T> {
   code: number;
   message: string;
   data?: T;
 
-  static build<T>(code: number, msg: string, obj?: T): Response<T> {
-    const response: Response<T> = { code, message: msg };
-    if (obj !== undefined) {
-      response.data = obj;
-    }
-    return response;
+  static build<T = any>(code: number, msg: string, obj?: T): Response<T> {
+    return { code, message: msg, data: obj };
   }
 
-  static success<T>(msgOrObj: string | T = MSG_SUCCESS, obj?: T): Response<T> {
+  /*static success<T = any>(msg: string = MSG_SUCCESS, obj?: T): Response<T> {
+    return this.build(SUCCESS, msg, obj);
+  }*/
+
+  static success<T = any>(
+    msgOrObj: string | T = MSG_SUCCESS,
+    obj?: T,
+  ): Response<T> {
     if (typeof msgOrObj === 'string') {
       return this.build(SUCCESS, msgOrObj, obj);
     } else {
@@ -37,15 +40,15 @@ export class ApiResponse<T> implements Response<T> {
     }
   }
 
-  static fail<T>(msg: string = MSG_FAIL): Response<T> {
+  static fail<T = any>(msg: string = MSG_FAIL): Response<T> {
     return this.build(FAIL, msg);
   }
 
-  static failWithCode<T>(code: number, msg: string): Response<T> {
+  static failWithCode<T = any>(code: number, msg: string): Response<T> {
     return this.build(code, msg);
   }
 
-  static validateFail<T>(msg: string = MSG_VALIDATE_FAIL): Response<T> {
+  static validateFail<T = any>(msg: string = MSG_VALIDATE_FAIL): Response<T> {
     return this.build(VALIDATE_FAIL, msg);
   }
 }

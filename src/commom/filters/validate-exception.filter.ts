@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiResponse } from '../interfaces/response.interface';
+import { ApiResponse } from '../interfaces/api-response.interface';
 import { ValidateException } from '../exceptions/validate.exception';
 
 /**

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { BizException } from '../exceptions/biz.exception';
-import { ApiResponse } from '../interfaces/response.interface';
+import { ApiResponse } from '../interfaces/api-response.interface';
 
 /**
  * 业务异常捕捉器
