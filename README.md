@@ -13,7 +13,7 @@
 
 #### 主要技术：
 
-1.DeepSeek-V3、DeepSeek-R1 LLM
+1.DeepSeek LLM
 
 2.NextJS
 
