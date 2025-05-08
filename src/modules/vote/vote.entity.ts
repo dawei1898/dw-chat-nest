@@ -1,15 +1,14 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
+/**
+ * 点赞、评论实体
+ *
+ * @author dawei
+ */
 @Entity({ name: 'dwc_vote_record' })
 export class VoteEntity {
-  @PrimaryColumn({ name: 'vote_id', type: 'bigint', comment: '主键' })
-  voteId: bigint;
+  @PrimaryColumn({ name: 'vote_id', type: 'varchar', comment: '主键' })
+  voteId: string;
 
   @Column({
     name: 'content_id',
@@ -18,23 +17,15 @@ export class VoteEntity {
   })
   contentId: string;
 
-  @Column({ name: 'user_id', type: 'bigint', comment: '用户 ID' })
-  userId: bigint;
+  @Column({ name: 'user_id', type: 'varchar', comment: '用户 ID' })
+  userId: string;
 
   @Column({ name: 'vote_type', type: 'varchar', comment: 'up-点赞，down-点踩' })
   voteType: string;
 
-  @CreateDateColumn({
-    name: 'create_time',
-    type: 'datetime',
-    comment: '创建时间',
-  })
+  @Column({ name: 'create_time', type: 'datetime', comment: '创建时间' })
   createTime: Date;
 
-  @UpdateDateColumn({
-    name: 'update_time',
-    type: 'datetime',
-    comment: '修改时间',
-  })
+  @Column({ name: 'update_time', type: 'datetime', comment: '修改时间' })
   updateTime: Date;
 }

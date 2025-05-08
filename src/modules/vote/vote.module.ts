@@ -4,9 +4,10 @@ import { VoteService } from './vote.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VoteEntity } from './vote.entity';
+import { AuthModule } from '../../components/auth/auth.module';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([VoteEntity])],
+  imports: [ConfigModule, TypeOrmModule.forFeature([VoteEntity]), AuthModule],
   controllers: [VoteController],
   providers: [VoteService],
 })
