@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Sse,
+} from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { Auth } from '../../components/auth/auth.decorator';
 import { Log } from '../../components/log/log.decoorator';
@@ -10,6 +18,9 @@ import { LoginUser } from '../../components/auth/login-user';
 import { PageResult } from '../../commom/interfaces/page-result';
 import { ChatEntity } from './chat.entity';
 import { MessageVo } from '../message/vo/message.vo';
+import { StreamChatDto } from './dto/stream-chat.dto';
+import { Observable } from 'rxjs';
+import { Validated } from '../../components/validate/validated.decorator';
 
 /**
  * 会话记录服务
@@ -86,5 +97,29 @@ export class ChatController {
       user.id.toString(),
     );
     return ApiResponse.success(messageVos);
+  }
+
+  /**
+   * 流式对话
+   */
+  @Log()
+  @Auth()
+  @Validated()
+  @Sse('streamChat')
+  streamChat(
+    @Body() dto: StreamChatDto,
+    @User() user: LoginUser,
+  ): Observable<string> {
+    return new Observable<string>((subscriber) => {
+      this.chatService
+        .streamChat(user.id.toString(), dto, (text: string) => {
+          subscriber.next(text);
+        })
+        .then(() => subscriber.complete())
+        .catch((error) => {
+          console.error('流式响应错误:', error);
+          subscriber.error(error);
+        });
+    });
   }
 }
