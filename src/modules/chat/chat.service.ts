@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ChatEntity } from './chat.entity';
 import IdUtil from '../../commom/utils/id.util';
 import { PageResult } from '../../commom/interfaces/page-result';
+import { MessageService } from '../message/message.service';
 
 /**
  * 会话记录服务
@@ -17,6 +18,7 @@ export class ChatService {
   private readonly logger = new Logger(ChatService.name);
 
   constructor(
+    private readonly messageService: MessageService,
     @InjectRepository(ChatEntity)
     private readonly chatRepository: Repository<ChatEntity>,
   ) {}
@@ -98,5 +100,12 @@ export class ChatService {
       return PageResult.buildEmpty<ChatEntity>();
     }
     return PageResult.build<ChatEntity>(pageNum, pageSize, total, data);
+  }
+
+  /**
+   * 查询聊天消息列表
+   */
+  async queryMessageList(chatId: string, user: string) {
+    return await this.messageService.queryMessageList(chatId, user);
   }
 }

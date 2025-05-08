@@ -2,8 +2,8 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'dwc_chat_message' })
 export class MessageEntity {
-  @PrimaryColumn({ name: 'msg_id', type: 'bigint', comment: '消息ID' })
-  msgId: bigint;
+  @PrimaryColumn({ name: 'msg_id', type: 'varchar', comment: '消息ID' })
+  msgId: string;
 
   @Column({ name: 'raw_msg_id', type: 'varchar', comment: '原始消息ID' })
   rawMsgId: string;

@@ -10,5 +10,6 @@ import { AuthModule } from '../../components/auth/auth.module';
   imports: [ConfigModule, TypeOrmModule.forFeature([VoteEntity]), AuthModule],
   controllers: [VoteController],
   providers: [VoteService],
+  exports: [VoteService],
 })
 export class VoteModule {}
