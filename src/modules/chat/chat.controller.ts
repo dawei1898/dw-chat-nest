@@ -7,6 +7,8 @@ import { ChatDto } from './dto/chat.dto';
 import { SUCCESS_MSG } from '../../commom/constant/result-msg.constant';
 import { User } from '../../components/auth/login-user.decorator';
 import { LoginUser } from '../../components/auth/login-user';
+import { PageResult } from '../../commom/interfaces/page-result';
+import { ChatEntity } from './chat.entity';
 
 /**
  * 会话记录服务
@@ -49,5 +51,22 @@ export class ChatController {
       user.id.toString(),
     );
     return ApiResponse.success(count);
+  }
+
+  /**
+   * 分页查询聊天会话
+   */
+  @Log()
+  @Auth()
+  @Post('queryChatPage')
+  async queryChatPage(
+    @Body() dto: ChatDto,
+    @User() user: LoginUser,
+  ): Promise<ApiResponse<PageResult<ChatEntity>>> {
+    const page: PageResult<ChatEntity> = await this.chatService.queryChatPage(
+      dto,
+      user.id.toString(),
+    );
+    return ApiResponse.success(page);
   }
 }

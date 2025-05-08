@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChatEntity } from './chat.entity';
 import IdUtil from '../../commom/utils/id.util';
+import { PageResult } from '../../commom/interfaces/page-result';
 
 /**
  * 会话记录服务
@@ -68,5 +69,34 @@ export class ChatService {
       updateTime: new Date(),
     });
     return affected || 0;
+  }
+
+  /**
+   * 分页查询聊天会话
+   */
+  async queryChatPage(dto: ChatDto, userId: string) {
+    ValidateUtil.isNull(dto, '参数不能为空！');
+    const pageNum = dto.pageNum || 1;
+    const pageSize = dto.pageSize || 10;
+    const chatName = dto.chatName;
+
+    const queryBuilder = this.chatRepository.createQueryBuilder('chat');
+    queryBuilder.where('chat.deleted = :deleted', { deleted: 0 });
+    queryBuilder.andWhere('chat.user_id = :userId', { userId: userId });
+    if (chatName) {
+      queryBuilder.andWhere('chat.chat_name LIKE :chatName', {
+        chatName: `%${chatName}%`,
+      });
+    }
+    queryBuilder
+      .orderBy('chat.create_time', 'DESC')
+      .skip((pageNum - 1) * pageSize)
+      .take(pageSize);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+    if (total === 0) {
+      return PageResult.buildEmpty<ChatEntity>();
+    }
+    return PageResult.build<ChatEntity>(pageNum, pageSize, total, data);
   }
 }
