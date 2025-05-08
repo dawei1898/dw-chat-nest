@@ -28,6 +28,8 @@ export class UserService {
 
   /**
    * 用户注册
+   *
+   * @author dawei
    */
   async register(dto: RegisterDto): Promise<bigint> {
     const username = dto.username;

@@ -18,6 +18,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       password: dbConfig?.password,
       database: dbConfig?.dbname,
       autoLoadEntities: true,
+      logging: true,
       //entities: [__dirname + '/**/*.entity{.ts,.js}'],
       //synchronize: true,
     };

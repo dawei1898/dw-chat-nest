@@ -1,7 +1,7 @@
 /**
  * 分页查询参数
  */
-export interface PageParam {
+export class PageParam {
   pageNum?: number;
   pageSize?: number;
 }

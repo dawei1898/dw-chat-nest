@@ -1,4 +1,5 @@
 import { Snowflake } from 'snowflake-uid';
+import { randomUUID } from 'crypto';
 
 // 定义配置类型以增强类型安全性
 interface SnowflakeConfig {
@@ -39,5 +40,21 @@ export default class IdUtil {
    */
   public static nextId(): bigint {
     return BigInt(this.instance.generate());
+  }
+
+  /**
+   * 生成UUID
+   * @returns 返回UUID
+   */
+  public static UUID(): string {
+    return randomUUID();
+  }
+
+  /**
+   * 生成UUID（去掉中划线）
+   * @returns 返回UUID
+   */
+  public static simpleUUID(): string {
+    return randomUUID().replaceAll('-', '');
   }
 }

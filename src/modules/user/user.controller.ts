@@ -11,6 +11,8 @@ import { RegisterDto } from './dto/register.dto';
 
 /**
  * 用户服务
+ *
+ * @author dawei
  */
 @Controller('user')
 export class UserController {

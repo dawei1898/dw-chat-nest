@@ -3,6 +3,11 @@ import { TransformDate } from '../../commom/decorators/transform-date.decorator'
 import { TransformBigint } from '../../commom/decorators/transform-bigint.decorator';
 import { TransformNull } from '../../commom/decorators/transform-null.decorator';
 
+/**
+ * 用户
+ *
+ * @author dawei
+ */
 @Entity({ name: 'dwc_user' })
 export class UserEntity {
   @TransformBigint()
