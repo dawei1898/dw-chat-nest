@@ -12,6 +12,12 @@ import OpenAI from 'openai';
 import { TempMessage } from './vo/temp-message';
 import { MessageEntity } from '../message/message.entity';
 import { plainToClass } from 'class-transformer';
+import {
+  ContentTypeEnum,
+  ModelEnum,
+  MsgTypeEnum,
+  RoleEnum,
+} from '../../commom/enums';
 
 /**
  * 会话记录服务
@@ -28,6 +34,7 @@ export class ChatService {
     @InjectRepository(ChatEntity)
     private readonly chatRepository: Repository<ChatEntity>,
   ) {
+    // DeepSeek 配置
     this.openai = new OpenAI({
       apiKey: process.env.DEEPSEEK_API_KEY,
       baseURL: process.env.DEEPSEEK_BASE_URL,
@@ -133,10 +140,10 @@ export class ChatService {
     userMessage.msgId = IdUtil.nextIdString();
     userMessage.rawMsgId = userMessage.msgId;
     userMessage.chatId = dto.chatId;
-    userMessage.type = 'user';
-    userMessage.role = 'user';
+    userMessage.type = MsgTypeEnum.USER;
+    userMessage.role = RoleEnum.USER;
     userMessage.content = dto.content;
-    userMessage.contentType = 'text';
+    userMessage.contentType = ContentTypeEnum.TEXT;
     userMessage.createUser = userId;
     userMessage.createTime = new Date();
     await this.messageService.addMessage(userMessage);
@@ -144,10 +151,12 @@ export class ChatService {
 
     // 调起 AI 对话
     const stream = await this.openai.chat.completions.create({
-      model: dto.openReasoning ? 'deepseek-reasoner' : 'deepseek-chat',
+      model: dto.openReasoning
+        ? ModelEnum.DEEPSEEK_REASONER
+        : ModelEnum.DEEPSEEK_CHAT,
       messages: [
         {
-          role: 'user',
+          role: RoleEnum.USER,
           content: dto.content,
         },
       ],
@@ -158,8 +167,8 @@ export class ChatService {
     const aiMessage: TempMessage = new TempMessage();
     aiMessage.msgId = IdUtil.nextIdString();
     aiMessage.chatId = dto.chatId;
-    aiMessage.type = 'ai';
-    aiMessage.role = 'assistant';
+    aiMessage.type = MsgTypeEnum.AI;
+    aiMessage.role = RoleEnum.ASSISTANT;
 
     // 临时数据
     let contentBuilder: string = '';
@@ -167,7 +176,7 @@ export class ChatService {
 
     // 处理 AI 返回流式数据
     for await (const chunk of stream) {
-      this.logger.debug('response chunk:', chunk);
+      //this.logger.debug('response chunk:', chunk);
       aiMessage.rawMsgId = chunk.id;
       aiMessage.modelId = chunk.model;
 
@@ -177,14 +186,14 @@ export class ChatService {
       if (reasoning_content) {
         aiMessage.reasoningContent = reasoning_content;
         reasoningContentBuilder += reasoning_content;
-        this.logger.log('response reasoning_content:', reasoning_content);
+        this.logger.debug('response reasoning_content:', reasoning_content);
       }
       // 回答内容
       const content = chunk.choices[0]?.delta?.content;
       if (content) {
         aiMessage.content = content;
         contentBuilder += content;
-        this.logger.log('response content:', content);
+        this.logger.debug('response content:', content);
       }
       // 结束
       if ('stop' === chunk.choices[0]?.finish_reason) {
@@ -201,7 +210,7 @@ export class ChatService {
     aiMessageEntity.reasoningContent = reasoningContentBuilder;
     aiMessageEntity.createTime = new Date();
     aiMessageEntity.createUser = userId;
-    aiMessageEntity.contentType = 'text';
+    aiMessageEntity.contentType = ContentTypeEnum.TEXT;
     await this.messageService.addMessage(aiMessageEntity);
     this.logger.log('Save AI Message');
   }

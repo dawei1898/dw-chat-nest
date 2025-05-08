@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Sse,
@@ -29,6 +30,8 @@ import { Validated } from '../../components/validate/validated.decorator';
  */
 @Controller('chat')
 export class ChatController {
+  private readonly logger = new Logger(ChatController.name);
+
   constructor(private readonly chatService: ChatService) {}
 
   /**
@@ -115,9 +118,11 @@ export class ChatController {
         .streamChat(user.id.toString(), dto, (text: string) => {
           subscriber.next(text);
         })
-        .then(() => subscriber.complete())
+        .then(() => {
+          subscriber.complete();
+        })
         .catch((error) => {
-          console.error('流式响应错误:', error);
+          this.logger.error('流式响应错误:', error); // 使用 Nest 的日志系统
           subscriber.error(error);
         });
     });
