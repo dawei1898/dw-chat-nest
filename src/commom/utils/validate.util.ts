@@ -35,13 +35,13 @@ export class ValidateUtil {
   }
 
   public static isEmpty(str: string, message: string): void {
-    if (!str || str.trim().length === 0) {
+    if (!str) {
       throw new ValidateException(message);
     }
   }
 
   public static isNotEmpty(str: string, message: string): void {
-    if (str || str.trim().length > 0) {
+    if (str) {
       throw new ValidateException(message);
     }
   }

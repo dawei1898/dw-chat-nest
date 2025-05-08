@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { Auth } from '../../components/auth/auth.decorator';
 import { Log } from '../../components/log/log.decoorator';
@@ -32,5 +32,22 @@ export class ChatController {
       user.id.toString(),
     );
     return ApiResponse.success(SUCCESS_MSG, chatId);
+  }
+
+  /**
+   * 删除聊天会话
+   */
+  @Log()
+  @Auth()
+  @Delete('/deleteChat/:chatId')
+  async deleteChat(
+    @Param() chatId: string,
+    @User() user: LoginUser,
+  ): Promise<ApiResponse<number>> {
+    const count: number = await this.chatService.deleteChat(
+      chatId,
+      user.id.toString(),
+    );
+    return ApiResponse.success(count);
   }
 }

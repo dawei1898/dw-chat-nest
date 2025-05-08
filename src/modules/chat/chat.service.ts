@@ -55,4 +55,18 @@ export class ChatService {
     }
     return chatId;
   }
+
+  /**
+   * 删除聊天会话
+   */
+  async deleteChat(chatId: string, userId: string) {
+    ValidateUtil.isEmpty(chatId, 'chatId不能为空!');
+    // 软删除
+    const { affected } = await this.chatRepository.update(chatId, {
+      deleted: 1,
+      userId: userId,
+      updateTime: new Date(),
+    });
+    return affected || 0;
+  }
 }
